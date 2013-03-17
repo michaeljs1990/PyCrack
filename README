@@ -1,0 +1,9 @@
+PyCrack README
+
+This is an experimental hash cracking library that will be using the curses library in the future as of now it is not implimented outside the general design. If you are looking for a full feature cracker I would point you to JTR which will work much better at this time.
+
+
+If you do wish to use or test at this time run the password.py file.
+
+
+Thank you for looking and any feedback is appreciated. I am also looking for anyone who has some experience in pyOpenCL or OpenCL.
