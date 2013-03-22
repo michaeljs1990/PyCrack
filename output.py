@@ -1,5 +1,10 @@
 import curses
 import time
+import multiprocessing
+
+#custom imports
+import password
+import crack
 
 #note when calling screen in printLeft() or printRight()
 #you must make sure to pay attention to the order 
@@ -17,29 +22,50 @@ def interface():
         winTopRight.refresh()
         return winTopLeft, winTopRight
 
-def printLeft(window, input, row):
+def printLeft(window, uinput, row):
     winTopLeft = window[0]
     if row > 18:
         row = 1
-    input = str(input)
-    loc = winTopLeft.getparyx()
-    winTopLeft.addstr(row,1, input)
+    uinput = str(uinput)
+    if len(uinput) > 48:
+        uinput = uinput[:45] + '...'
+    winTopLeft.addstr(row, 1, uinput)
     winTopLeft.refresh()
     return row + 1
 
-#def printRight(window[1], input):
-#    input = str(input)
-#    loc = winTopRight.getparyx()
-#    winTopRight.addstr(1,1, input)
-#    winTopRight.refresh()
+def printRight(window, uinput , row):
+    winTopRight = window[1]
+    #if row > 18:
+    #    row = 1
+    winTopRight.addstr(row , 1, uinput)
+    winTopRight.refresh()
+    #return row + 1
     
     
-
-window = interface()
-x, row = 0, 1
-while x < 20:
-    row = printLeft(window, 'Hey I hope this works', row)
-    time.sleep(1)
-    x = x + 1
-
-curses.endwin()
+if __name__ == "__main__":
+    window = interface()
+    
+    #Print to left screen
+    hashfile = open('config/cracklistB.txt', 'r+')
+    row = 1
+    for hashx in hashfile:
+        if hashx[0] != '#':
+            row = printLeft(window, hashx, row)
+    
+    #print to right screen
+    hashfile = open('config/cracklistB.txt', 'r+')
+    row = 1
+    for hashx in hashfile:
+        if hashx[0] != '#':
+            #shared is a variable that both procs can access
+	    svar = 0
+            shared = multiprocessing.Value('d', svar)
+            proc = multiprocessing.Process(
+                    target = password.crackhash,
+                    args = (hashx, shared))
+            proc.start()
+            while True:
+                printRight(window, str(shared.value), row)
+                time.sleep(5)
+    #Clean exit from curses GUI
+    curses.endwin()

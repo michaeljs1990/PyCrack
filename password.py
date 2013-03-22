@@ -3,13 +3,12 @@
 import crack
 
 
-dictionary = open('config/dict.txt', 'r+')
-file = open('config/cracklist.txt', 'r+')
+dictionary = open('config/dictionary.txt', 'r+')
 
-for word in file:
-    word = word.rstrip('\n')
-    if word[0] != '#':
+
+def crackhash(hashx, shared):
+        word = hashx.rstrip('\n')
         if '$6$' in word:
-            crack.nixSha512(word, dictionary)
+            crack.nixSha512(word, dictionary, shared)
         if '$2a$12$' in word:
-            crack.nixBlowfish(word, dictionary)
+            crack.nixBlowfish(word, dictionary, shared)

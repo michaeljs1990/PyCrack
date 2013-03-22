@@ -1,5 +1,7 @@
 PyCrack README
 
+The current version is a working prototype. I am looking to intigrate into this pyOpenCL to gain a huge boost in computing power.
+
 This is an experimental hash cracking library that will be using the curses library in the future as of now it is not implimented outside the general design. If you are looking for a full feature cracker I would point you to JTR which will work much better at this time.
 
 
