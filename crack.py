@@ -3,7 +3,7 @@ import hashlib
 import crypt
 import bcrypt
 import datetime
-
+import time
 
 #sorts the nixPwd hash
 def nixSha512Sort(word):
@@ -13,15 +13,15 @@ def nixSha512Sort(word):
     return salt, password
 
 #cracks the sha512 unix hash
-def nixSha512(hashx, dictionary, shared):
+def nixSha512(hashx, dictionary, sharedCount, sharedPass):
     salt, password = nixSha512Sort(hashx)
-    a = datetime.datetime.now()
     for word in dictionary:
         word = word.rstrip()
-        shared.value = shared.value + 1
+        sharedCount.value = sharedCount.value + 1
         if crypt.crypt(word, salt) == (salt + password):
-            time = datetime.datetime.now() - a
-            return word
+            sharedPass.value = word
+            time.sleep(4)
+            break
 
 #sorts blowfish hashs for use in nixBlowfish
 def nixBlowfishSort(word):
@@ -31,7 +31,7 @@ def nixBlowfishSort(word):
 
 #cracks a variation of blowfish py-bcrypt
 #use at own risk close to one second per hash
-def nixBlowfish(hashx, dictionary, shared):
+def nixBlowfish(hashx, dictionary, sharedCount, sharedPass):
     salt, password = nixBlowfishSort(hashx)
     a = datetime.datetime.now()
     for word in dictionary:

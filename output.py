@@ -1,7 +1,6 @@
 import curses
 import time
 import multiprocessing
-import Queue
 
 #custom imports
 import password
@@ -33,14 +32,12 @@ def printLeft(window, uinput, row):
     winTopLeft.refresh()
     return row + 1
 
-def printRight(window, uinput, row, number):
+def printRight(window, count, password, row, number):
     winTopRight = window[1]
-    #if row > 18:
-    #    row = 1
     time_sleep = 3
-    hash_per_second = str((uinput/time_sleep) / number) + ' h/s'
-    uinput = str(uinput) + ' hash'
-    winTopRight.addstr(row , 1, uinput + '\t' + hash_per_second)
+    hash_per_second = str((count/time_sleep) / number) + ' h/s'
+    count = str(count) + ' hash'
+    winTopRight.addstr(row , 1, count + '\t' + hash_per_second + '\t ' + password)
     winTopRight.refresh()
     return (number + 1)
     
@@ -49,7 +46,7 @@ if __name__ == "__main__":
     window = interface()
     
     #Print to left screen
-    hashfile = open('config/cracklistB.txt', 'r+')
+    hashfile = open('config/cracklist.txt', 'r+')
     row = 1
     for hashx in hashfile:
         if hashx[0] != '#':
@@ -62,14 +59,19 @@ if __name__ == "__main__":
     for hashx in hashfile:
         if hashx[0] != '#':
             #shared is a variable that both procs can access
-            shared = multiprocessing.Value('i', 0)
+            sharedCount = multiprocessing.Manager().Value('i', 0)
+            sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
             proc = multiprocessing.Process(
                     target = password.crackhash,
-                    args = (hashx, shared))
+                    args = (hashx, sharedCount, sharedPass))
             proc.start()
             while proc.is_alive():
-                number = printRight(window, shared.value, row, number)
+                number = printRight(window, sharedCount.value,
+                          sharedPass.value, row, number)
                 time.sleep(3)
+            printRight(window, sharedCount.value,
+             sharedPass.value, row, number)
+            row = row + 1
     
     #Clean exit from curses GUI
     curses.endwin()
