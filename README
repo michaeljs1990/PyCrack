@@ -5,7 +5,8 @@ The current version is a working prototype. I am looking to intigrate into this 
 This is an experimental hash cracking library that will be using the curses library in the future as of now it is not implimented outside the general design. If you are looking for a full feature cracker I would point you to JTR which will work much better at this time.
 
 
-If you do wish to use or test at this time run the password.py file.
+If you do wish to use or test at this time run the output.py file.
+It will crack the hashes loaded in the config file for the time being. Once I have a much more functional program I will look at making this more friendly
 
 
 Thank you for looking and any feedback is appreciated. I am also looking for anyone who has some experience in pyOpenCL or OpenCL.

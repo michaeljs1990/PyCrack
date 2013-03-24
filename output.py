@@ -1,10 +1,10 @@
 import curses
 import time
 import multiprocessing
+import Queue
 
 #custom imports
 import password
-import crack
 
 #note when calling screen in printLeft() or printRight()
 #you must make sure to pay attention to the order 
@@ -33,13 +33,16 @@ def printLeft(window, uinput, row):
     winTopLeft.refresh()
     return row + 1
 
-def printRight(window, uinput , row):
+def printRight(window, uinput, row, number):
     winTopRight = window[1]
     #if row > 18:
     #    row = 1
-    winTopRight.addstr(row , 1, uinput)
+    time_sleep = 3
+    hash_per_second = str((uinput/time_sleep) / number) + ' h/s'
+    uinput = str(uinput) + ' hash'
+    winTopRight.addstr(row , 1, uinput + '\t' + hash_per_second)
     winTopRight.refresh()
-    #return row + 1
+    return (number + 1)
     
     
 if __name__ == "__main__":
@@ -53,19 +56,20 @@ if __name__ == "__main__":
             row = printLeft(window, hashx, row)
     
     #print to right screen
-    hashfile = open('config/cracklistB.txt', 'r+')
+    hashfile.seek(0,0)
     row = 1
+    number = 1
     for hashx in hashfile:
         if hashx[0] != '#':
             #shared is a variable that both procs can access
-	    svar = 0
-            shared = multiprocessing.Value('d', svar)
+            shared = multiprocessing.Value('i', 0)
             proc = multiprocessing.Process(
                     target = password.crackhash,
                     args = (hashx, shared))
             proc.start()
-            while True:
-                printRight(window, str(shared.value), row)
-                time.sleep(5)
+            while proc.is_alive():
+                number = printRight(window, shared.value, row, number)
+                time.sleep(3)
+    
     #Clean exit from curses GUI
     curses.endwin()
