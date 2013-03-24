@@ -1,9 +1,11 @@
 PyCrack README
 
-The current version is a working prototype. I am looking to intigrate into this pyOpenCL to gain a huge boost in computing power.
+This program currently cracks all hashs supported by the crypt(3) lib as well as the blowfish hash. More will be added in the future including the hashs found in the hashlib module. You will need to supply your own dictionary as I have only added a sample dictionary in the config file consisting of 2000 words. Just replace with with you dictionary and you will be all set to go.
 
-This is an experimental hash cracking library that will be using the curses library in the future as of now it is not implimented outside the general design. If you are looking for a full feature cracker I would point you to JTR which will work much better at this time.
+The hashs that you would like to crack you can add in config/cracklist.txt one at a time. Passwords need to be entered in the normal format that they are found in the shadow file on a linux os. Search shadow password file on google if you need to learn more about this.
 
+Once you have changed the above option enter...
 
-If you do wish to use or test at this time run the output.py file.
-It will crack the hashes loaded in the config file for the time being. Once I have a much more functional program I will look at making this more friendly.
+python output.py
+
+Library required to run this are, hashlib, crypr, bcrypt, time, curses, and muliprocessing. If you have any feedback or interest in this project send me an email at mschuett@uwm.edu thanks.

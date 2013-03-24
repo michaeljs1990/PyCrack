@@ -2,7 +2,6 @@
 import hashlib
 import crypt
 import bcrypt
-import datetime
 import time
 
 #sorts the nixPwd hash
@@ -33,9 +32,10 @@ def nixBlowfishSort(word):
 #use at own risk close to one second per hash
 def nixBlowfish(hashx, dictionary, sharedCount, sharedPass):
     salt, password = nixBlowfishSort(hashx)
-    a = datetime.datetime.now()
     for word in dictionary:
         word = word.rstrip()
+        sharedCount.value = sharedCount.value + 1
         if bcrypt.hashpw(word, salt) == (salt + password):
-            time = datetime.datetime.now() - a
-            return word
+            sharedPass.value = word
+            time.sleep(4)
+            break

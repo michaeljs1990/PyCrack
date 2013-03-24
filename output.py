@@ -55,9 +55,9 @@ if __name__ == "__main__":
     #print to right screen
     hashfile.seek(0,0)
     row = 1
-    number = 1
     for hashx in hashfile:
         if hashx[0] != '#':
+            number = 1
             #shared is a variable that both procs can access
             sharedCount = multiprocessing.Manager().Value('i', 0)
             sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')

@@ -3,10 +3,8 @@
 import crack
 
 
-dictionary = open('config/dictionary.txt', 'r+')
-
-
 def crackhash(hashx, sharedCount, sharedPass):
+        dictionary = open('config/dictionary.txt', 'r+')
         word = hashx.rstrip('\n')
         if '$6$' in word:
             crack.nixSha512(word, dictionary, sharedCount, sharedPass)
