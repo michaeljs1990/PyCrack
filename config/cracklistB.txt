@@ -1,5 +1,0 @@
-#Enter the full hashed passwords below one line at a time.
-#For instance with the default unix hash we are unable to determine
-#the hash type withouth $6$.
-lenny:$6$RdC.L4uy$f37vQ.53FxtKE0NiKduu9zCCECyAUj5HsnWizqfGchsYICABTsbD8eB7NH7zVRb.g9PfVqWiA7/NImjAup.pZ1
-$2a$12$5OQYYF4yNt7yvNZdvsSiaum3mLj2lnWECDoVqLsQ/BeO1FOHggR9q
