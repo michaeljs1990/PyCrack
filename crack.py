@@ -4,14 +4,19 @@ import crypt
 import bcrypt
 import time
 
-#sorts the nixPwd hash
+
+""" Takes in hashx from nixSha512
+and outputs it in two words. """
 def nixSha512Sort(word):
     word = word.split('$')
     salt = '$' + word[1] + '$' + word[2] + '$'
     password = word[3].split(':')[0]
     return salt, password
 
-#cracks the sha512 unix hash
+
+""" Takes in formated hash from cracklist.txt and splits
+it into a usable salt and hash. The loop then pulls in a word
+from dictionary.txt and hashs it to check against your hash. """
 def nixSha512(hashx, dictionary, sharedCount, sharedPass):
     salt, password = nixSha512Sort(hashx)
     for word in dictionary:
@@ -22,14 +27,18 @@ def nixSha512(hashx, dictionary, sharedCount, sharedPass):
             time.sleep(4)
             break
 
-#sorts blowfish hashs for use in nixBlowfish
+
+""" Takes in hashx from nixBlowfish
+and outputs it in two words. """
 def nixBlowfishSort(word):
     salt = word[:29]
     password = word[29:]
     return salt, password
 
-#cracks a variation of blowfish py-bcrypt
-#use at own risk close to one second per hash
+
+""" Takes in hashx from cracklist.txt and calls nixBlowfishSort
+to generate a salt and password. It then goes through dictionary.txt
+and hashs each word to test against the input salt and password. """
 def nixBlowfish(hashx, dictionary, sharedCount, sharedPass):
     salt, password = nixBlowfishSort(hashx)
     for word in dictionary:
@@ -39,3 +48,19 @@ def nixBlowfish(hashx, dictionary, sharedCount, sharedPass):
             sharedPass.value = word
             time.sleep(4)
             break
+
+"""IN DEVELOPMENT
+def hashsha1sort(word):
+    pass
+    #need to figure out how to set up hashs
+    #that do not have explicide salt given
+
+def hashsha1(hashx, dictionary, sharedCount, sharedPass):
+    salt, password = hashsha1sort(hashx)
+    for word in dictionary:
+        word = word.rstrip()
+        sharedCount.value = sharedCount.value + 1
+        if hashlib.sha1(salt + word) == hashx:
+            sharedPass.value = word
+            time.sleep(4)
+            break"""

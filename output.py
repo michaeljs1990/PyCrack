@@ -5,9 +5,9 @@ import multiprocessing
 #custom imports
 import password
 
-#note when calling screen in printLeft() or printRight()
-#you must make sure to pay attention to the order 
-#windows are returned in.
+
+""" Creates a curses window object and two windows
+on the right and left side."""
 def interface():
         screen = curses.initscr()
         screenSize = screen.getmaxyx()
@@ -21,6 +21,10 @@ def interface():
         winTopRight.refresh()
         return winTopLeft, winTopRight
 
+
+""" Prints out input to the left screen. set 
+row = printLeft() when using and place inside
+a loop for input to print out input and go to next row. """
 def printLeft(window, uinput, row):
     winTopLeft = window[0]
     if row > 18:
@@ -32,6 +36,10 @@ def printLeft(window, uinput, row):
     winTopLeft.refresh()
     return row + 1
 
+""" Print out input to right screen. This is used to display
+all information about the current process. must return to 
+number = printRight() in order for hash_per_second to calculate
+properly."""
 def printRight(window, count, password, row, number):
     winTopRight = window[1]
     time_sleep = 3
@@ -40,25 +48,25 @@ def printRight(window, count, password, row, number):
     winTopRight.addstr(row , 1, count + '\t' + hash_per_second + '\t ' + password)
     winTopRight.refresh()
     return (number + 1)
-    
-    
+
+
+""" Main function to start the entire hashing process.
+sharedCount and sharedPass are used to keep track of
+how many hashs have been checked and how fast."""    
 if __name__ == "__main__":
     window = interface()
     
-    #Print to left screen
     hashfile = open('config/cracklist.txt', 'r+')
     row = 1
     for hashx in hashfile:
         if hashx[0] != '#':
             row = printLeft(window, hashx, row)
     
-    #print to right screen
     hashfile.seek(0,0)
     row = 1
     for hashx in hashfile:
         if hashx[0] != '#':
             number = 1
-            #shared is a variable that both procs can access
             sharedCount = multiprocessing.Manager().Value('i', 0)
             sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
             proc = multiprocessing.Process(
@@ -73,5 +81,4 @@ if __name__ == "__main__":
              sharedPass.value, row, number)
             row = row + 1
     
-    #Clean exit from curses GUI
     curses.endwin()
