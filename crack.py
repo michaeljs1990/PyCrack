@@ -24,7 +24,6 @@ def nixSha512(hashx, dictionary, sharedCount, sharedPass):
         sharedCount.value = sharedCount.value + 1
         if crypt.crypt(word, salt) == (salt + password):
             sharedPass.value = word
-            time.sleep(4)
             break
 
 
@@ -46,21 +45,20 @@ def nixBlowfish(hashx, dictionary, sharedCount, sharedPass):
         sharedCount.value = sharedCount.value + 1
         if bcrypt.hashpw(word, salt) == (salt + password):
             sharedPass.value = word
-            time.sleep(4)
             break
 
-"""IN DEVELOPMENT
 def hashsha1sort(word):
-    pass
-    #need to figure out how to set up hashs
-    #that do not have explicide salt given
+    word = word.split('$')
+    salt = word[2]
+    password = word[3]
+    return salt, password
+
 
 def hashsha1(hashx, dictionary, sharedCount, sharedPass):
     salt, password = hashsha1sort(hashx)
     for word in dictionary:
         word = word.rstrip()
         sharedCount.value = sharedCount.value + 1
-        if hashlib.sha1(salt + word) == hashx:
+        if hashlib.sha1(salt + word) == password:
             sharedPass.value = word
-            time.sleep(4)
-            break"""
+            break

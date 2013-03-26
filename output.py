@@ -79,6 +79,7 @@ if __name__ == "__main__":
                 time.sleep(3)
             printRight(window, sharedCount.value,
              sharedPass.value, row, number)
+            time.sleep(10) #only used for testing
             row = row + 1
-    
+ 
     curses.endwin()
