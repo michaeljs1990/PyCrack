@@ -99,3 +99,22 @@ def hashsha(hashx, dictionary, sharedCount, sharedPass):
             if hashlib.sha512(salt + word).hexdigest() == password:
                 sharedPass.value = word
                 break
+
+
+"""MD5 Sort"""
+def hashSortMd5(word):
+    word = word.split('$')
+    salt = word[2]
+    password = word[3]
+    return salt, password
+
+
+"""MD5 hash"""
+def hashmd5(hashx, dictionary, sharedCount, sharedPass):
+    salt, password = hashSortMd5(hashx)
+    for word in dictionary:
+        word = word.rstrip()
+        sharedCount.value = sharedCount.value + 1
+        if hashlib.md5(salt + word).hexdigest() == password:
+            sharedPass.value = word
+            break

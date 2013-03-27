@@ -15,7 +15,7 @@ def crackhash(hashx, sharedCount, sharedPass):
     if '$sha$' in word:
         crack.hashsha(word, dictionary, sharedCount, sharedPass)
     if '$md5$' in word:
-        crack.hashsha512(word, dictionary, sharedCount, sharedPass)
+        crack.hashmd5(word, dictionary, sharedCount, sharedPass)
 
 
 #def prehashedlookup()

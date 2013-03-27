@@ -42,7 +42,7 @@ number = printRight() in order for hash_per_second to calculate
 properly."""
 def printRight(window, count, password, row, number):
     winTopRight = window[1]
-    time_sleep = 3
+    time_sleep = 2
     hash_per_second = str((count/time_sleep) / number) + ' h/s'
     count = str(count) + ' hash'
     winTopRight.addstr(row , 1, count + '\t' + hash_per_second + '\t ' + password)
@@ -76,10 +76,10 @@ if __name__ == "__main__":
             while proc.is_alive():
                 number = printRight(window, sharedCount.value,
                           sharedPass.value, row, number)
-                time.sleep(3)
+                time.sleep(2)
             printRight(window, sharedCount.value,
              sharedPass.value, row, number)
-            time.sleep(10) #only used for testing
+            time.sleep(3) #only used for testing
             row = row + 1
  
     curses.endwin()
