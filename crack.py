@@ -47,18 +47,55 @@ def nixBlowfish(hashx, dictionary, sharedCount, sharedPass):
             sharedPass.value = word
             break
 
-def hashsha1sort(word):
+
+""" Takes in hash from sha1 and
+breaks it into a salt and password."""
+def hashShaSort(word):
     word = word.split('$')
-    salt = word[2]
-    password = word[3]
-    return salt, password
+    shatype = word[2]
+    salt = word[3]
+    password = word[4]
+    return shatype, salt, password
 
 
-def hashsha1(hashx, dictionary, sharedCount, sharedPass):
-    salt, password = hashsha1sort(hashx)
-    for word in dictionary:
-        word = word.rstrip()
-        sharedCount.value = sharedCount.value + 1
-        if hashlib.sha1(salt + word) == password:
-            sharedPass.value = word
-            break
+""" Reads in word off of cracklist.txt and calls hashsha1sort
+to break it into usable pieces. It then goes and checks the
+hash against each word in dictionary.txt this processes all
+non unix sha hashes. (1, 224, 256, 384, and 512)"""
+def hashsha(hashx, dictionary, sharedCount, sharedPass):
+    shatype, salt, password = hashShaSort(hashx)
+    if shatype == '1':
+        for word in dictionary:
+            word = word.rstrip()
+            sharedCount.value = sharedCount.value + 1
+            if hashlib.sha1(salt + word).hexdigest() == password:
+                sharedPass.value = word
+                break
+    if shatype == '224':
+        for word in dictionary:
+            word = word.rstrip()
+            sharedCount.value = sharedCount.value + 1
+            if hashlib.sha224(salt + word).hexdigest() == password:
+                sharedPass.value = word
+                break
+    if shatype == '256':
+        for word in dictionary:
+            word = word.rstrip()
+            sharedCount.value = sharedCount.value + 1
+            if hashlib.sha256(salt + word).hexdigest() == password:
+                sharedPass.value = word
+                break
+    if shatype == '384':
+        for word in dictionary:
+            word = word.rstrip()
+            sharedCount.value = sharedCount.value + 1
+            if hashlib.sha384(salt + word).hexdigest() == password:
+                sharedPass.value = word
+                break
+    if shatype == '512':
+        for word in dictionary:
+            word = word.rstrip()
+            sharedCount.value = sharedCount.value + 1
+            if hashlib.sha512(salt + word).hexdigest() == password:
+                sharedPass.value = word
+                break

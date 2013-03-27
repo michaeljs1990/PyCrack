@@ -12,16 +12,8 @@ def crackhash(hashx, sharedCount, sharedPass):
         crack.nixSha512(word, dictionary, sharedCount, sharedPass)
     if '$2a$12$' in word:
         crack.nixBlowfish(word, dictionary, sharedCount, sharedPass)
-    if '$sha1$' in word:
-        crack.hashsha1(word, dictionary, sharedCount, sharedPass)
-    if '$sha224$' in word:
-        crack.hashsha224(word, dictionary, sharedCount, sharedPass)
-    if '$sha256$' in word:
-        crack.hashsha224(word, dictionary, sharedCount, sharedPass)
-    if '$sha384$' in word:
-        crack.hashsha384(word, dictionary, sharedCount, sharedPass)
-    if '$sha512$' in word:
-        crack.hashsha512(word, dictionary, sharedCount, sharedPass)
+    if '$sha$' in word:
+        crack.hashsha(word, dictionary, sharedCount, sharedPass)
     if '$md5$' in word:
         crack.hashsha512(word, dictionary, sharedCount, sharedPass)
 

@@ -1,4 +1,7 @@
-#Enter the full hashed passwords below one line at a time.
-#For instance with the default unix hash we are unable to determine
-#the hash type withouth $6$.
+#Enter the full hashed passwords below one line at a time
+#as it would show up in a shadow file.
+#for sha and md5 use the following format.
+#username$type$salt$pre/post$hash$
 lenny:$6$RdC.L4uy$f37vQ.53FxtKE0NiKduu9zCCECyAUj5HsnWizqfGchsYICABTsbD8eB7NH7zVRb.g9PfVqWiA7/NImjAup.pZ1:
+michael$sha$1$salt$59b3e8d637cf97edbe2384cf59cb7453dfe30789
+michael$sha$512$salt$2908d2c28dfc047741fc590a026ffade237ab2ba7e1266f010fe49bde548b5987a534a86655a0d17f336588e540cd66f67234b152bbb645b4bb85758a1325d64
