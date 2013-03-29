@@ -12,14 +12,17 @@ def interface():
         screen = curses.initscr()
         screenSize = screen.getmaxyx()
         screen.addstr(0, 1, 'PyMon Version 0.1dev')
+        botInput = curses.newwin(3, 102, 21, 0)
         winTopLeft = curses.newwin(20, 50, 1, 0)
         winTopRight = curses.newwin(20, 50, 1, 52)
         winTopLeft.border()
         winTopRight.border()
+        botInput.border()
         screen.refresh()
         winTopLeft.refresh()
         winTopRight.refresh()
-        return winTopLeft, winTopRight
+        botInput.refresh()
+        return winTopLeft, winTopRight, botInput
 
 
 """ Prints out input to the left screen. set 
@@ -55,31 +58,37 @@ sharedCount and sharedPass are used to keep track of
 how many hashs have been checked and how fast."""    
 if __name__ == "__main__":
     window = interface()
+    botInput = window[2]
     
-    hashfile = open('config/cracklist.txt', 'r+')
-    row = 1
-    for hashx in hashfile:
-        if hashx[0] != '#':
-            row = printLeft(window, hashx, row)
-    
-    hashfile.seek(0,0)
-    row = 1
-    for hashx in hashfile:
-        if hashx[0] != '#':
-            number = 1
-            sharedCount = multiprocessing.Manager().Value('i', 0)
-            sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
-            proc = multiprocessing.Process(
-                    target = password.crackhash,
-                    args = (hashx, sharedCount, sharedPass))
-            proc.start()
-            while proc.is_alive():
-                number = printRight(window, sharedCount.value,
-                          sharedPass.value, row, number)
-                time.sleep(2)
-            printRight(window, sharedCount.value,
-             sharedPass.value, row, number)
-            time.sleep(3) #only used for testing
-            row = row + 1
- 
+    status = "running"
+    cmd = botInput.getstr(1,2)
+
+    while status == "running": 
+        #left screen
+        hashfile = open('config/cracklist.txt', 'r+')
+        row = 1
+        for hashx in hashfile:
+            if hashx[0] != '#':
+                row = printLeft(window, hashx, row)
+
+        #right screen
+        hashfile.seek(0,0)
+        row = 1
+        for hashx in hashfile:
+            if hashx[0] != '#':
+                number = 1
+                sharedCount = multiprocessing.Manager().Value('i', 0)
+                sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
+                proc = multiprocessing.Process(
+                        target = password.crackhash,
+                        args = (hashx, sharedCount, sharedPass))
+                proc.start()
+                while proc.is_alive():
+                    number = printRight(window, sharedCount.value,
+                              sharedPass.value, row, number)
+                    time.sleep(2)
+                printRight(window, sharedCount.value,
+                           sharedPass.value, row, number)
+                row = row + 1
+
     curses.endwin()
