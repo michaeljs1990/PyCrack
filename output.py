@@ -53,18 +53,72 @@ def printRight(window, count, password, row, number):
     winTopRight.refresh()
     return (number + 1)
 
+""" Options available when starting the program"""
+def mainMenu(winTopLeft, botInput):
+    winTopLeft.addstr(1, 1, 'Main Menu Options')
+    winTopLeft.addstr(3, 1, 'hash -- start hashing')
+    winTopLeft.addstr(4, 1, 'hashlist -- make hash list')
+    winTopLeft.addstr(5, 1, 'loaddict -- load new dictionary')
+    winTopLeft.addstr(6, 1, 'loadhash -- load new hash list')
+    winTopLeft.refresh()
+    cmd = botInput.getstr(1, 2)
+    botInput.clear()
+    botInput.border()
+    botInput.refresh()
+    return cmd
+
+""" This promps the user for all information needed to
+make a hash list from a given dictionary."""
+def hashListGetInput(winTopLeft, winTopRight, botInput):
+    winTopLeft.clear()
+    winTopLeft.border()
+    winTopLeft.addstr(1, 1, 'Enter the name for your list.')
+    winTopLeft.addstr(2, 1, 'It will be put in the lists directory.')
+    winTopLeft.refresh()
+    listName = botInput.getstr(1, 2)
+    botInput.clear()
+    botInput.border()
+    botInput.refresh()
+    winTopLeft.clear()
+    winTopLeft.border()
+    winTopLeft.addstr(1, 1, 'Enter one of the following hash types.')
+    winTopLeft.addstr(4, 1, '> nixSha512')
+    winTopLeft.addstr(5, 1, '> nixBlowfish')
+    winTopLeft.addstr(6, 1, '> sha1')
+    winTopLeft.addstr(7, 1, '> sha224')
+    winTopLeft.addstr(8, 1, '> sha256')
+    winTopLeft.addstr(9, 1, '> sha384')
+    winTopLeft.addstr(10, 1, '> sha512')
+    winTopLeft.addstr(11, 1, '> md5')
+    winTopLeft.refresh()
+    listType = botInput.getstr(1, 2)
+    botInput.clear()
+    botInput.border()
+    botInput.refresh()
+    winTopLeft.clear()
+    winTopLeft.border()
+    winTopLeft.addstr(1, 1, 'Enter the salt to be used.')
+    winTopLeft.refresh()
+    listSalt = botInput.getstr(1, 2)
+    botInput.clear()
+    botInput.border()
+    botInput.refresh()
+    return listName, listType, listSalt
+    
 
 """ Main function to start the entire hashing process.
 sharedCount and sharedPass are used to keep track of
 how many hashs have been checked and how fast."""    
 if __name__ == "__main__":
     window = interface()
+    winTopLeft = window[0]
+    winTopRight = window[1]
     botInput = window[2]
     
     cmd = 'run'
 
     while cmd != 'exit' and cmd != 'quit':
-        cmd = botInput.getstr(1, 2)
+        cmd = mainMenu(winTopLeft, botInput)
         #hash strings from cracklist.txt
         if cmd == 'hash' or cmd == 'hx':
             #left screen
@@ -93,10 +147,8 @@ if __name__ == "__main__":
                                sharedPass.value, row, number)
                     row = row + 1
         if cmd == 'hashlist':
-            listName = botInput.getstr(1, 2)
-            listType = botInput.getstr(1, 2)
-            listSalt = botInput.getstr(1, 2)
             dictionary = open('config/dictionary.txt')
+            listName, listType, listSalt = hashListGetInput(winTopLeft, winTopRight, botInput)
             listhash.makeHashList(listName, listType, dictionary, listSalt)
         if cmd == 'loaddict':
             pass

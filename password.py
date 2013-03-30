@@ -19,6 +19,4 @@ def crackhash(hashx, sharedCount, sharedPass):
 
 
 #def prehashedlookup()
-"""this function will take a list that has been pre-hashed and print out a list for you"""
-
-"""future goal is to add a rainbow table gen as well as common rainbow tables for unsalted passwords"""
+"""this function will take a list that has been pre-hashed and run through the currently loaded hash"""

@@ -7,27 +7,76 @@ def nixSha512list(dictionary, outputFile, listSalt):
     for word in dictionary:
         word = word.rstrip()
         hashed = crypt.crypt(word, listSalt)
-        outputFile.write(word + '|' + hashed +'\n')
+        outputFile.write(word + '|' + hashed + '\n')
 
-""" Produces a list of hashes from
-your input dictionary file. This
-supports the crypt library."""
+
+def nixBlowfishlist(dictionary, outputFile, listSalt):
+    for word in dictionary:
+        word = word.rstrip()
+        hashed = bcrypt.hashpw(word, listSalt)
+        outputFile.write(word + '|' + hashed + '\n')
+
+        
+def sha1list(dictionary, outputFile, listSalt):
+    for word in dictionary:
+        word = word.rstrip()
+        hashed = hashlib.sha1(salt + word).hexdigest()
+        outputFile.write(word + '|' + hashed + '\n')
+
+
+def sha224list(dictionary, outputFile, listSalt):
+    for word in dictionary:
+        word = word.rstrip()
+        hashed = hashlib.sha224(salt + word).hexdigest()
+        outputFile.write(word + '|' + hashed + '\n')
+
+
+def sha256list(dictionary, outputFile, listSalt):
+    for word in dictionary:
+        word = word.rstrip()
+        hashed = hashlib.sha256(salt + word).hexdigest()
+        outputFile.write(word + '|' + hashed + '\n')
+
+
+def sha384list(dictionary, outputFile, listSalt):
+    for word in dictionary:
+        word = word.rstrip()
+        hashed = hashlib.sha384(salt + word).hexdigest()
+        outputFile.write(word + '|' + hashed + '\n')
+
+
+def sha512list(dictionary, outputFile, listSalt):
+    for word in dictionary:
+        word = word.rstrip()
+        hashed = hashlib.sha512(salt + word).hexdigest()
+        outputFile.write(word + '|' + hashed + '\n')
+
+
+def md5list(dictionary, outputFile, listSalt):
+    for word in dictionary:
+        word = word.rstrip()
+        hashed = hashlib.md5(salt + word).hexdigest()
+        outputFile.write(word + '|' + hashed + '\n')
+
+
+""" Produces a list of hashes from your input dictionary file. This
+supports the crypt, hashlib, and bcrypt library currently."""
 def makeHashList(listName, listType, dictionary, listSalt):
     listName = 'lists/' + listName
     outputFile = open(listName, 'w+')
     if listType == 'nixSha512':
         nixSha512list(dictionary, outputFile, listSalt)
     if listType == 'nixBlowfish':
-        pass
+        nixBlowfishlist(dictionary, outputFile, listSalt)
     if listType == 'sha1':
-        pass
+        sha1list(dictionary, outputFile, listSalt)
     if listType == 'sha224':
-        pass
+        sha224list(dictionary, outputFile, listSalt)
     if listType == 'sha256':
-        pass
+        sha256list(dictionary, outputFile, listSalt)
     if listType == 'sha384':
-        pass
+        sha384list(dictionary, outputfile, listSalt)
     if listType == 'sha512':
-        pass
+        sha512list(dictionary, outputfile, listSalt)
     if listType == 'md5':
-        pass
+        md5list(dictionary, outputfile, listSalt)
