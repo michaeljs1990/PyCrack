@@ -4,6 +4,7 @@ import multiprocessing
 
 #custom imports
 import password
+import listhash
 
 
 """ Creates a curses window object and two windows
@@ -60,35 +61,46 @@ if __name__ == "__main__":
     window = interface()
     botInput = window[2]
     
-    status = "running"
-    cmd = botInput.getstr(1,2)
+    cmd = 'run'
 
-    while status == "running": 
-        #left screen
-        hashfile = open('config/cracklist.txt', 'r+')
-        row = 1
-        for hashx in hashfile:
-            if hashx[0] != '#':
-                row = printLeft(window, hashx, row)
-
-        #right screen
-        hashfile.seek(0,0)
-        row = 1
-        for hashx in hashfile:
-            if hashx[0] != '#':
-                number = 1
-                sharedCount = multiprocessing.Manager().Value('i', 0)
-                sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
-                proc = multiprocessing.Process(
-                        target = password.crackhash,
-                        args = (hashx, sharedCount, sharedPass))
-                proc.start()
-                while proc.is_alive():
-                    number = printRight(window, sharedCount.value,
-                              sharedPass.value, row, number)
-                    time.sleep(2)
-                printRight(window, sharedCount.value,
-                           sharedPass.value, row, number)
-                row = row + 1
+    while cmd != 'exit' and cmd != 'quit':
+        cmd = botInput.getstr(1, 2)
+        #hash strings from cracklist.txt
+        if cmd == 'hash' or cmd == 'hx':
+            #left screen
+            hashfile = open('config/cracklist.txt', 'r+')
+            row = 1
+            for hashx in hashfile:
+                if hashx[0] != '#':
+                    row = printLeft(window, hashx, row)
+            #right screen
+            hashfile.seek(0,0)
+            row = 1
+            for hashx in hashfile:
+                if hashx[0] != '#':
+                    number = 1
+                    sharedCount = multiprocessing.Manager().Value('i', 0)
+                    sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
+                    proc = multiprocessing.Process(
+                            target = password.crackhash,
+                            args = (hashx, sharedCount, sharedPass))
+                    proc.start()
+                    while proc.is_alive():
+                        number = printRight(window, sharedCount.value,
+                                  sharedPass.value, row, number)
+                        time.sleep(2)
+                    printRight(window, sharedCount.value,
+                               sharedPass.value, row, number)
+                    row = row + 1
+        if cmd == 'hashlist':
+            listName = botInput.getstr(1, 2)
+            listType = botInput.getstr(1, 2)
+            listSalt = botInput.getstr(1, 2)
+            dictionary = open('config/dictionary.txt')
+            listhash.makeHashList(listName, listType, dictionary, listSalt)
+        if cmd == 'loaddict':
+            pass
+        if cmd == 'loadhash':
+            pass
 
     curses.endwin()
