@@ -20,42 +20,42 @@ def nixBlowfishlist(dictionary, outputFile, listSalt):
 def sha1list(dictionary, outputFile, listSalt):
     for word in dictionary:
         word = word.rstrip()
-        hashed = hashlib.sha1(salt + word).hexdigest()
+        hashed = hashlib.sha1(listSalt + word).hexdigest()
         outputFile.write(word + '|' + hashed + '\n')
 
 
 def sha224list(dictionary, outputFile, listSalt):
     for word in dictionary:
         word = word.rstrip()
-        hashed = hashlib.sha224(salt + word).hexdigest()
+        hashed = hashlib.sha224(listSalt + word).hexdigest()
         outputFile.write(word + '|' + hashed + '\n')
 
 
 def sha256list(dictionary, outputFile, listSalt):
     for word in dictionary:
         word = word.rstrip()
-        hashed = hashlib.sha256(salt + word).hexdigest()
+        hashed = hashlib.sha256(listSalt + word).hexdigest()
         outputFile.write(word + '|' + hashed + '\n')
 
 
 def sha384list(dictionary, outputFile, listSalt):
     for word in dictionary:
         word = word.rstrip()
-        hashed = hashlib.sha384(salt + word).hexdigest()
+        hashed = hashlib.sha384(listSalt + word).hexdigest()
         outputFile.write(word + '|' + hashed + '\n')
 
 
 def sha512list(dictionary, outputFile, listSalt):
     for word in dictionary:
         word = word.rstrip()
-        hashed = hashlib.sha512(salt + word).hexdigest()
+        hashed = hashlib.sha512(listSalt + word).hexdigest()
         outputFile.write(word + '|' + hashed + '\n')
 
 
 def md5list(dictionary, outputFile, listSalt):
     for word in dictionary:
         word = word.rstrip()
-        hashed = hashlib.md5(salt + word).hexdigest()
+        hashed = hashlib.md5(listSalt + word).hexdigest()
         outputFile.write(word + '|' + hashed + '\n')
 
 

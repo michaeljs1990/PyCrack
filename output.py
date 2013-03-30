@@ -54,7 +54,12 @@ def printRight(window, count, password, row, number):
     return (number + 1)
 
 """ Options available when starting the program"""
-def mainMenu(winTopLeft, botInput):
+def mainMenu(winTopLeft, winTopRight, botInput):
+    winTopRight.clear()
+    winTopRight.border()
+    winTopRight.refresh()
+    winTopLeft.clear()
+    winTopLeft.border()
     winTopLeft.addstr(1, 1, 'Main Menu Options')
     winTopLeft.addstr(3, 1, 'hash -- start hashing')
     winTopLeft.addstr(4, 1, 'hashlist -- make hash list')
@@ -62,9 +67,12 @@ def mainMenu(winTopLeft, botInput):
     winTopLeft.addstr(6, 1, 'loadhash -- load new hash list')
     winTopLeft.refresh()
     cmd = botInput.getstr(1, 2)
+    winTopLeft.clear()
+    winTopLeft.border()
     botInput.clear()
     botInput.border()
     botInput.refresh()
+    winTopLeft.refresh()
     return cmd
 
 """ This promps the user for all information needed to
@@ -118,7 +126,7 @@ if __name__ == "__main__":
     cmd = 'run'
 
     while cmd != 'exit' and cmd != 'quit':
-        cmd = mainMenu(winTopLeft, botInput)
+        cmd = mainMenu(winTopLeft, winTopRight, botInput)
         #hash strings from cracklist.txt
         if cmd == 'hash' or cmd == 'hx':
             #left screen
