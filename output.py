@@ -142,12 +142,12 @@ if __name__ == "__main__":
                 if hashx[0] != '#':
                     row = printLeft(window, hashx, row)
             #right screen
-            hashfile.seek(0,0)
+            hashfile.seek(0, 0)
             row = 1
             for hashx in hashfile:
                 if hashx[0] != '#':
                     number = 1
-                    sharedCount = multiprocessing.Manager().Value('i', 0)
+                     sharedCount = multiprocessing.Manager().Value('i', 0)
                     sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
                     proc = multiprocessing.Process(
                             target = password.crackhash,
@@ -159,7 +159,7 @@ if __name__ == "__main__":
                         time.sleep(2)
                     printRight(window, sharedCount.value, sharedPass.value, row, number)
                     row = row + 1
-        #makes pre hashed list from dictionary.txt
+       #makes pre hashed list from dictionary.txt
         if cmd == 'hashlist':
             number = 1
             dictionary = open('config/dictionary.txt')
@@ -176,7 +176,31 @@ if __name__ == "__main__":
             while proc.is_alive():
                 number = printRight(window, sharedCount.value, '...', 1, number)
                 time.sleep(2)
+        #WORKING PROGRESS
         if cmd == 'hashattack':
-            pass
-
+            #left screen
+            hashfile = open('config/cracklist.txt', 'r+')
+            row = 1
+            for hashx in hashfile
+                if hashx[0] != '#'
+                row = printLeft(window, hashx, row)
+            #right screen
+            hashfile.seek(0, 0)
+            row = 1
+            for hashx in hashfile:
+                if hashx[0] != '#'
+                    number = 1
+                    sharedCount = multiprocessing.Manager().Value('i', 0)
+                    sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
+                    proc = multiprocessing.Process(
+                            target = password.crackhash,
+                            args = (hashx, sharedCount, sharedPass))
+                    proc.start()
+                    while proc.is_alive():
+                        number = printRight(window, sharedCount.value,
+                                  sharedPass.value, row, number)
+                        time.sleep(2)
+                    printRight(window, sharedCount.value, sharedPass.value, row, number)
+                    row = row + 1
+ 
     curses.endwin()
