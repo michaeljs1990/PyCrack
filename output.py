@@ -40,6 +40,7 @@ def printLeft(window, uinput, row):
     winTopLeft.refresh()
     return row + 1
 
+
 """ Print out input to right screen. This is used to display
 all information about the current process. must return to 
 number = printRight() in order for hash_per_second to calculate
@@ -53,6 +54,7 @@ def printRight(window, count, password, row, number):
     winTopRight.refresh()
     return (number + 1)
 
+
 """ Options available when starting the program"""
 def mainMenu(winTopLeft, winTopRight, botInput):
     winTopRight.clear()
@@ -61,10 +63,10 @@ def mainMenu(winTopLeft, winTopRight, botInput):
     winTopLeft.clear()
     winTopLeft.border()
     winTopLeft.addstr(1, 1, 'Main Menu Options')
-    winTopLeft.addstr(3, 1, 'hash -- start hashing')
-    winTopLeft.addstr(4, 1, 'hashlist -- make hash list')
-    winTopLeft.addstr(5, 1, 'loaddict -- load new dictionary')
-    winTopLeft.addstr(6, 1, 'loadhash -- load new hash list')
+    winTopLeft.addstr(3, 3, 'hash       -- start hashing')
+    winTopLeft.addstr(4, 3, 'hashlist   -- make hash list')
+    winTopLeft.addstr(5, 3, 'hashattack -- check hash with premade list')
+    winTopLeft.addstr(6, 3, 'exit       -- to leave program')
     winTopLeft.refresh()
     cmd = botInput.getstr(1, 2)
     winTopLeft.clear()
@@ -75,9 +77,11 @@ def mainMenu(winTopLeft, winTopRight, botInput):
     winTopLeft.refresh()
     return cmd
 
+
 """ This promps the user for all information needed to
 make a hash list from a given dictionary."""
 def hashListGetInput(winTopLeft, winTopRight, botInput):
+    listType, listSalt = None, None
     winTopLeft.clear()
     winTopLeft.border()
     winTopLeft.addstr(1, 1, 'Enter the name for your list.')
@@ -90,19 +94,21 @@ def hashListGetInput(winTopLeft, winTopRight, botInput):
     winTopLeft.clear()
     winTopLeft.border()
     winTopLeft.addstr(1, 1, 'Enter one of the following hash types.')
-    winTopLeft.addstr(4, 1, '> nixSha512')
-    winTopLeft.addstr(5, 1, '> nixBlowfish')
-    winTopLeft.addstr(6, 1, '> sha1')
-    winTopLeft.addstr(7, 1, '> sha224')
-    winTopLeft.addstr(8, 1, '> sha256')
-    winTopLeft.addstr(9, 1, '> sha384')
-    winTopLeft.addstr(10, 1, '> sha512')
-    winTopLeft.addstr(11, 1, '> md5')
+    winTopLeft.addstr(4, 3, '> nixSha512')
+    winTopLeft.addstr(5, 3, '> nixBlowfish')
+    winTopLeft.addstr(6, 3, '> sha1')
+    winTopLeft.addstr(7, 3, '> sha224')
+    winTopLeft.addstr(8, 3, '> sha256')
+    winTopLeft.addstr(9, 3, '> sha384')
+    winTopLeft.addstr(10, 3, '> sha512')
+    winTopLeft.addstr(11, 3, '> md5')
     winTopLeft.refresh()
-    listType = botInput.getstr(1, 2)
-    botInput.clear()
-    botInput.border()
-    botInput.refresh()
+    while listType != 'nixSha512' and 'nixBlowfish' and 'sha1' \
+         and 'sha224' and 'sha256' and 'sha384' and 'sha512' and 'md5':
+        listType = botInput.getstr(1, 2)
+        botInput.clear()
+        botInput.border()
+        botInput.refresh()
     winTopLeft.clear()
     winTopLeft.border()
     winTopLeft.addstr(1, 1, 'Enter the salt to be used.')
@@ -151,16 +157,26 @@ if __name__ == "__main__":
                         number = printRight(window, sharedCount.value,
                                   sharedPass.value, row, number)
                         time.sleep(2)
-                    printRight(window, sharedCount.value,
-                               sharedPass.value, row, number)
+                    printRight(window, sharedCount.value, sharedPass.value, row, number)
                     row = row + 1
+        #makes pre hashed list from dictionary.txt
         if cmd == 'hashlist':
+            number = 1
             dictionary = open('config/dictionary.txt')
+            sharedCount = multiprocessing.Manager().Value('i', 0)
             listName, listType, listSalt = hashListGetInput(winTopLeft, winTopRight, botInput)
-            listhash.makeHashList(listName, listType, dictionary, listSalt)
-        if cmd == 'loaddict':
-            pass
-        if cmd == 'loadhash':
+            proc = multiprocessing.Process(
+                     target = listhash.makeHashList,
+                     args = (listName, listType, dictionary, listSalt, sharedCount))
+            proc.start()
+            winTopLeft.clear()
+            winTopLeft.border()
+            winTopLeft.refresh()
+            printLeft(window, 'Generating hash list ...', 1)
+            while proc.is_alive():
+                number = printRight(window, sharedCount.value, '...', 1, number)
+                time.sleep(2)
+        if cmd == 'hashattack':
             pass
 
     curses.endwin()
