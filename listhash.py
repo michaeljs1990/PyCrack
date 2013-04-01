@@ -3,6 +3,11 @@ import hashlib
 import bcrypt
 
 
+""" This is used to make a prehashed list from the input dictionary
+select by the user. The user sets the salt to use from the interface.
+Read the wiki for more infromation on proper use of salts."""
+
+
 def nixSha512list(dictionary, outputFile, listSalt, sharedCount):
     for word in dictionary:
         word = word.rstrip()

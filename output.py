@@ -103,8 +103,8 @@ def hashListGetInput(winTopLeft, winTopRight, botInput):
     winTopLeft.addstr(10, 3, '> sha512')
     winTopLeft.addstr(11, 3, '> md5')
     winTopLeft.refresh()
-    while listType != 'nixSha512' and 'nixBlowfish' and 'sha1' \
-         and 'sha224' and 'sha256' and 'sha384' and 'sha512' and 'md5':
+    while listType not in ('nixSha512', 'nixBlowfish', 'sha1',\
+          'sha224', 'sha256', 'sha384', 'sha512', 'md5'):
         listType = botInput.getstr(1, 2)
         botInput.clear()
         botInput.border()
@@ -147,7 +147,7 @@ if __name__ == "__main__":
             for hashx in hashfile:
                 if hashx[0] != '#':
                     number = 1
-                     sharedCount = multiprocessing.Manager().Value('i', 0)
+                    sharedCount = multiprocessing.Manager().Value('i', 0)
                     sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
                     proc = multiprocessing.Process(
                             target = password.crackhash,
@@ -181,14 +181,14 @@ if __name__ == "__main__":
             #left screen
             hashfile = open('config/cracklist.txt', 'r+')
             row = 1
-            for hashx in hashfile
-                if hashx[0] != '#'
-                row = printLeft(window, hashx, row)
+            for hashx in hashfile:
+                if hashx[0] != '#':
+                    row = printLeft(window, hashx, row)
             #right screen
             hashfile.seek(0, 0)
             row = 1
             for hashx in hashfile:
-                if hashx[0] != '#'
+                if hashx[0] != '#':
                     number = 1
                     sharedCount = multiprocessing.Manager().Value('i', 0)
                     sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')

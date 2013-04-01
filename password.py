@@ -1,5 +1,6 @@
-#custom lib
+#custom libs
 import crack
+import prehashedcrack
 
 
 """ This module is used to get the hash from config/dictionary.txt
@@ -18,5 +19,11 @@ def crackhash(hashx, sharedCount, sharedPass):
         crack.hashmd5(word, dictionary, sharedCount, sharedPass)
 
 
-#def prehashedlookup()
-"""this function will take a list that has been pre-hashed and run through the currently loaded hash"""
+""" This checked the hashes input against a pre defined hash list.
+We do not check for hash type as we expect the user to be using the
+right hashes if they have computed a pre defined list."""
+def prehashedcrack(hashx, sharedCount, sharedPass):
+    word = hashx.rstrip('\n')
+    #set to allow user to select list later
+    hashlist = open('lists/test.txt')
+    prehashedcrack.crack(word, hashlist, sharedCount, sharedPass)
