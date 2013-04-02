@@ -22,7 +22,7 @@ def crackhash(hashx, sharedCount, sharedPass):
 """ This checked the hashes input against a pre defined hash list.
 We do not check for hash type as we expect the user to be using the
 right hashes if they have computed a pre defined list."""
-def prehashedcrack(hashx, sharedCount, sharedPass):
+def prehashed(hashx, sharedCount, sharedPass):
     word = hashx.rstrip('\n')
     #set to allow user to select list later
     hashlist = open('lists/test.txt')

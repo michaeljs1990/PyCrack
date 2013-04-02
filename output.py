@@ -193,7 +193,7 @@ if __name__ == "__main__":
                     sharedCount = multiprocessing.Manager().Value('i', 0)
                     sharedPass = multiprocessing.Manager().Value(unicode, 'Nope')
                     proc = multiprocessing.Process(
-                            target = password.crackhash,
+                            target = password.prehashed,
                             args = (hashx, sharedCount, sharedPass))
                     proc.start()
                     while proc.is_alive():
