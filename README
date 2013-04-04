@@ -1,14 +1,14 @@
 PyCrack README
 Version 1.0.0
 
-This program currently cracks all hashs supported by the crypt(3) lib as well as the blowfish hash. More will be added in the future including the hashs found in the hashlib module. You will need to supply your own dictionary as I have only added a sample dictionary in the config file consisting of 2000 words. Just replace with with you dictionary and you will be all set to go.
+Supported Hashs: sha1, sha224, sha256, sha384, sha512, blowfish, and crypt(3) sha's.
 
-The hashs that you would like to crack you can add in config/cracklist.txt one at a time. Passwords need to be entered in the normal format that they are found in the shadow file on a linux os. Search shadow password file on google if you need to learn more about this. Hopefully improved parsing will be added at a later time when I have more free time.
+You will need to supply your own dictionary as I have only added a sample dictionary in the config file consisting of 2000 words. Just replace with with you dictionary and you will be all set to go. It must be named dictionary.txt or you will need to edit the code.
+
+The hashes to be cracked should be entered in the config/cracklist.txt file. For more about how to enter hashes see the wiki
 
 Once you have changed the above option enter...
 
-python output.py
+python pymon.py
 
 Library required to run this are, hashlib, crypr, bcrypt, time, curses, and muliprocessing. If you have any feedback or interest in this project send me an email at mschuett@uwm.edu thanks.
-
-Look at the wiki for examples on how to get your program running.
